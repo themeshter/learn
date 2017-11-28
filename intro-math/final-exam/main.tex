@@ -1,0 +1,446 @@
+\documentclass[12pt,letter]{memoir} 
+
+%%%% Begin latex configuration
+
+% line spacing
+%\linespread{1.3}
+
+% configuration for the bibtex package
+% redefine the info from /usr/share/texmf/tex/latex/biblatex/lbx/english.lbx
+\usepackage{booktabs}
+%\usepackage[style=alphabetic, hyperref=true]{biblatex}
+\usepackage[style=numeric, hyperref=true]{biblatex}
+\usepackage{supertabular}
+\bibliography{document}
+
+% command for code
+\DeclareFixedFont {\codefont}{OT1}{pcr}{m}{n}{10}
+\newcommand{\code}[1]{\codefont#1\normalfont}
+% command for reader's question
+\newcommand{\readq}[1]{\ding{44}~\textbf{Maybe you would say: }"#1"}
+\newcommand{\question}[1]{\ding{45}~\textbf{Try to answer: }"#1"}
+\newcommand{\newcodeline}{\ding{229}\\}
+\newcommand{\checkbox}{\SquareShadowBottomRight}
+
+% index
+\usepackage{makeidx}
+%\usepackage{showidx}
+%\makeindex[document] removed from here
+
+% shape packages
+\usepackage{bbding}
+\usepackage{pifont}
+% Warning: wasysym has a conflict with glossaries
+%\usepackage{wasysym}
+%\usepackage{dingbat}
+
+% notes
+\usepackage{fancybox}
+\newenvironment{cbox}%
+  {\begin{center}\begin{Sbox}\begin{minipage}{0.8\textwidth}}%
+  {\end{minipage}\end{Sbox}\shadowbox{\TheSbox}\end{center}}
+
+% the hyperref config
+\usepackage{hyperref}
+\hypersetup{colorlinks=true}
+\usepackage{color,calc,graphicx,soul,fourier}
+% the listings settings
+\usepackage{listings}
+\definecolor{listingbackground}{gray}{0.95}
+\lstset{frameround=tttt}
+\lstset{frame=tRBl}
+\lstset{backgroundcolor=\color{listingbackground}}
+\lstset{captionpos=b}
+\lstset{basicstyle=\footnotesize}
+\lstset{language=[LaTeX]TeX}
+
+% glossaries
+\usepackage[toc,acronym,automake]{glossaries-extra}
+\makeglossaries
+%\include{extra/glossary}
+
+% chapter style
+\renewcommand{\chaptername}{Problem}
+\definecolor{chaptercolor}{rgb}{0,0,0}
+\makeatletter
+\newlength\dlf@normtxtw
+\setlength\dlf@normtxtw{\textwidth}
+\def\myhelvetfont{\def\sfdefault{mdput}}
+\newsavebox{\feline@chapter}
+\newcommand\feline@chapter@marker[1][4cm]{%
+  \sbox\feline@chapter{%
+     \resizebox{!}{#1}{\fboxsep=1pt%
+       \colorbox{chaptercolor}{\color{white}\bfseries\sffamily\thechapter}%
+     }}%
+  \rotatebox{90}{%
+     \resizebox{%
+       \heightof{\usebox{\feline@chapter}}+\depthof{\usebox{\feline@chapter}}}%
+     {!}{\scshape\so\@chapapp}}\quad%
+  \raisebox{\depthof{\usebox{\feline@chapter}}}{\usebox{\feline@chapter}}%
+}
+\newcommand\feline@chm[1][4cm]{%
+  \sbox\feline@chapter{\feline@chapter@marker[#1]}%
+  \makebox[0pt][l]{% aka \rlap[\Checkmark]
+     \makebox[1cm][r]{\usebox\feline@chapter}%
+  }}
+  
+\makeindex[document]
+\makechapterstyle{daleif1}{
+  \renewcommand\chaptitlefont{\normalfont\Huge\bfseries\scshape\color{chaptercolor}}
+  \renewcommand\chapternamenum{}
+  \renewcommand\printchaptername{}
+  \renewcommand\printchapternum{\null\hfill\feline@chm[2.5cm]\par}
+  \renewcommand\afterchapternum{\par\vskip\midchapskip}
+  \renewcommand\printchaptertitle[1]{\chaptitlefont\raggedleft ##1\par}
+}
+\makeatother
+\chapterstyle{daleif1}
+\setlrmarginsandblock{25mm}{20mm}{*}
+\setulmarginsandblock{20mm}{20mm}{*}
+\setsecnumdepth{subsection}
+\maxsecnumdepth{subsection}
+\maxtocdepth{subsection}
+\settocdepth{subsection}
+
+% PDF nice output
+%\hypersetup{colorlinks=true, citecolor=black}
+% configuration for the page size
+%\setstocksize{297mm}{210mm}
+%\settrimmedsize{297mm}{210mm}{*}
+%\setlength{\trimtop}{0pt}
+%\setlength{\trimedge}{\stockwidth}
+%\addtolength{\trimedge}{-\paperwidth}
+%\settypeblocksize{252mm}{175mm}{*}
+%\setulmargins{20mm}{*}{*}
+%\setlrmargins{25mm}{*}{*}
+%setul and lr marginblock commands removed from here
+%\setmarginnotes{17pt}{51pt}{\onelineskip}
+%\setheadfoot{\onelineskip}{2\onelineskip}
+%\setheaderspaces{*}{2\onelineskip}{*}
+\checkandfixthelayout
+
+
+% some custom-made commands
+\newcommand{\picwidth}{.75\textwidth}
+\newcommand{\cstdfigure}[2]{
+\begin{figure}[!ht]
+ \centering
+ \includegraphics[width=\picwidth]{pics/#1}
+\caption{#2} \label{#1}
+\end{figure}
+}
+\newcommand{\cstdfigurewpercentage}[3]{
+\begin{figure}[!ht]
+ \centering
+ \includegraphics[width=#3\textwidth]{pics/#1}
+\caption{#2} \label{#1}
+\end{figure}
+}
+\newcommand{\carrow}{~\ding{213}~}
+\newcommand{\biarrow}{~\ding{214}~}
+
+\newcommand{\eg}{e.g.~}
+\newcommand{\fastCenter}[1]{
+\begin{center}
+\Large{#1}
+\end{center}
+}
+
+\newcommand{\titlepage}[1]{
+\fastCenter{Introduction to Mathematical Thinking\\Course by Stanford University}
+\vspace{\fill}
+\begin{center}
+\HUGE{#1}
+\end{center}
+\vspace{\fill}
+\fastCenter{Coursera\\\today}}
+
+% changes in the font family
+\usepackage{bookman}
+\usepackage{helvet}
+\renewcommand{\rmdefault}{ppl}
+\renewcommand{\sfdefault}{phv}
+
+%hypenation
+% document numbering
+%\setsecnumdepth{subsection}
+%\maxsecnumdepth{subsection}
+%\maxtocdepth{subsection}
+%\settocdepth{subsection}
+%above moved to conditional
+
+%%%% End latex configuration
+
+% mainmatter
+\begin{document}
+%general settings
+\tightlists
+
+\frontmatter
+\pagestyle{empty}
+
+% title pages
+\titlepage{\textbf{Peer-graded Assignment}}
+\cleardoublepage
+
+\pagenumbering{roman}
+\pagestyle{headings}
+\tableofcontents
+%\clearpage
+%\listoffigures
+%\clearpage
+%\lstlistoflistings
+%\clearpage
+\newpage
+%\listoftables
+\mainmatter
+\pagenumbering{arabic}
+%\chapter*{Abstract}
+%\include{authors/authors}
+
+\chapter*{Introduction}
+This material has been developed as a solution to the peer-graded exercise for the September-November session of \href{https://www.coursera.org/learn/mathematical-thinking}{``Introduction to Mathematical Thinking''} by \href{http://profkeithdevlin.com/}{Prof. Keith Devlin} course available on \href{http://www.coursera.com}{Coursera}.
+
+During the peer-graded review I received some supportive feedback (the grade was 93\%) and some of the fellow students asked about how the material was created. Therefore I decided to publish the work, as an example for further use.
+
+Note that the reader of this material must not use nor present the content of this material as being their own work (in other words, you must obey \href{https://learner.coursera.help/hc/en-us/articles/209818863-Coursera-Honor-Code}{Coursera's honor code}). The \emph{content} (the proofs themselves) should be used just as an inspiration on how to do your own work (beware that I am not a mathematician, so my approach in some cases might not be the correct one - so use at your own risk!).
+
+However, the \emph{template} (the \LaTeX~file) can be used even for commercial purpose being released under the \href{https://github.com/themeshter/learn/blob/master/LICENSE}{MIT license}.
+
+\section{Editorial Notes}
+This material was created using the following tools:
+\begin{itemize}
+\item \textbf{Operating system}: \href{http://releases.ubuntu.com/16.04/}{Ubuntu 16.04.3 LTS (Xenial Xerus) x64 Desktop Edition}.
+\item \textbf{\LaTeX~editor}: Texmaker version 4.4.1.
+\item \textbf{\LaTeX~toolset}: Texlive.
+\end{itemize}
+There are no links provided to Texmaker or Texlive because you can install those from Ubuntu's distribution.
+
+In order to start your work, follow these steps:
+\begin{enumerate}
+\item Clone this repository.
+\item Open the \code{main.tex} file with Texmaker.
+\item Start editing it and change it to whatever you want. The \code{F1} key will ``build'' your PDF.
+\end{enumerate}
+
+If you run into any trouble with producing your PDF:
+\begin{itemize}
+\item Get help from yourself ;-). By saying that I mean just look online help (``google it'', colloquially speaking) before asking somebody else. You will be surprised how many problems you can actually solve by yourself with no external help at all.
+\item If the step above doesn't work, call a friend - somebody you know that has experience with \LaTeX. I am not a \LaTeX expert, but with online help I usually get to where I want to go...
+\item As a last resort, you can open an issues here and I will try to respond when I will have some time (answering is not guaranteed though).
+\end{itemize}
+
+As a last remark, if you find that this was helpful to you, pass it or or even star it on github!
+
+\chapter{Problem 1}
+\section*{Statement}
+Say whether the following is true or false and support your answer by a proof.
+\begin{equation}\label{prob1}
+(\exists m \in \mathbb{N})(\exists n \in \mathbb{N})(3m+5n=12)
+\end{equation}
+\section*{Solution}
+We will demonstrate that it is not possible to find two natural numbers (integer numbers strictly greater than $0$) that satisfy the equation $3m+5n=12$.
+
+Given that 12 is an even number, it means that both $3m$ and $5n$ must be simultaneously either odd or even. Because 3 and 5 are odd, it means that both $m$ and $n$ must be simultaneously odd or even. Let's start with having $m$ and $n$ odd.
+The smallest numbers we can consider are $m=1$ and $n=1$ which means that
+\begin{equation}\label{both_odd}
+\begin{split}
+3m+5n & = \\
+ & = 3\cdot1+5\cdot1 \\
+ & = 8
+\end{split}
+\end{equation}
+With this combination, the equality we aim form is not satisfied (see equation \ref{both_odd}). The next feasible possibility would be to consider $m$ and $n$ both even and the smallest value for that would be 2. In that case,
+\begin{equation}\label{both_even}
+\begin{split}
+3m+5n & = \\
+ & = 3\cdot2+5\cdot2 \\
+ & = 16
+\end{split}
+\end{equation}
+Equation \ref{both_even} not only shows that the result is not equal to the desired one (12) but it is also greater. Increasing $m$ or $n$ will only increase the value of $3m+5n$, so there is no possible combination of $m$ and $n$ to satisfy equation \ref{prob1}, hence the statement is false. $\square$
+\chapter{Problem 2}
+\section*{Statement}
+Say whether the following is true or false and support your answer by a proof: The sum of any five consecutive integers is divisible by 5 (without remainder).
+\section*{Solution}
+Let's consider an arbitrary integer number $n$ and the four consecutive numbers following it: $n+1$, $n+2$, $n+3$, $n+4$. The sum of these five numbers can me expressed as:
+\begin{equation}\label{fiveconsecutive}
+\begin{split}
+n+(n+1)+(n+2)+(n+3)+(n+4) & = \\
+ & =  5n+10\\
+& = 5(n+2)
+\end{split}
+\end{equation}
+Given that $5\mid5(n+2)$ we can conclude that:
+\begin{equation}
+(\forall n \in \mathbb{Z})(5 \mid \sum_{i=0}^{4}(n+i))
+\end{equation}
+$\square$
+\chapter{Problem 3}
+\section*{Statement}
+Say whether the following is true or false and support your answer by a proof: For any integer $n$, the number $n^2 + n + 1$ is odd.
+\section*{Solution}
+In order to prove that this statement is true we will leverage the following rules for integer numbers addition (their proof is not covered here):
+\begin{enumerate}
+\item The sum of two integers with the same parity (either both odd or both even) is an even integer.
+\item The sum of two integers having different parities (one being odd and the other being even) is an odd integer.
+\end{enumerate}
+We can express $n^2 + n + 1$ as $n(n+1) + 1$.
+For every $n$ we would choose, $n(n+1)$ will be an even number because at least one of $n$ or $n+1$ is even. Based on rule number 2 expressed above, $n(n+1)+1$ will be an odd number because it represents the sum between an even number ($n(n+1)$) and an odd number ($1$).$\square$
+
+\chapter{Problem 4}
+\section*{Statement}
+Prove that every odd natural number is of one of the forms $4n + 1$ or $4n + 3$, where $n$ is an integer.
+\section*{Solution}
+If $k$ is an odd natural number then $(\exists p \in \mathbb{Z})(k=2p+1)$. At its end, $p$ can be either odd or even, so we have two scenarios:
+\begin{enumerate}
+\item If $p$ is even, then $(\exists n \in \mathbb{Z})(p=2n)$ and subsequently $k=2\cdot2n+1=4n+1$.
+\item If $p$ is odd, then $(\exists n \in \mathbb{Z})(p=2n+1)$ and subsequently $k=2\cdot(2n+1)+1=4n+3$.
+\end{enumerate}
+These two scenarios prove that every odd natural number is of one of the forms $4n + 1$ or $4n + 3$, where $n$ is an integer.$\square$
+
+\chapter{Problem 5}
+\section*{Statement}
+Prove that for any integer $n$, at least one of the integers $n$, $n + 2$, $n + 4$ is divisible by 3.
+\section*{Solution}
+An integer $n$ can be one of $3k$, $3k+1$, $3k+2$, where $k$ is another integer. Formally,
+\begin{equation}\label{3k}
+(\forall n \in \mathbb{Z})(\exists k \in \mathbb{Z})((n=3k) \lor (n=3k+1) \lor (n=3k+2))
+\end{equation}
+Let's analyze the three situations one by one:
+\begin{enumerate}
+\item $n=3k$. In this situation $3 \mid n$ because $3 \mid 3k$.
+\item $n=3k+1$. In this case, because $n+2=3k+1+2=3k+3=3(k+1)$ then $3 \mid (n+2)$.
+\item $n=3k+2$. In this case, because $n+4=3k+2+4=3k+6=3(k+2)$ then $3 \mid (n+4)$.
+\end{enumerate}
+As a result, for any chosen $n$, at least one of $n$, $n + 2$, $n + 4$ is divisible by 3.$\square$
+
+\chapter{Problem 6}
+\section*{Statement}
+A classic unsolved problem in number theory asks if there are infinitely many pairs of `twin primes', pairs of primes separated by 2, such as 3 and 5, 11 and 13, or 71 and 73. Prove that the only prime triple (i.e. three primes, each 2 from the next) is 3, 5, 7.
+\section*{Solution}
+In problem 5, we have proven the following statement: for any integer $n$, at least one of the integers $n$, $n + 2$, $n + 4$ is divisible by 3. We will leverage this result to solve the current problem.
+
+We will use the method of proving by contradiction. Let's assume that there is a prime number $n>3$ so that $n$, $n+2$ and $n+4$ are prime. Based on the proof from problem 5, we know that at least on of the three mentioned numbers are divisible by 3. This means that:
+\begin{enumerate}
+\item Either the primes are 3,5,7 (which cannot be because we chose $n>3$) or
+\item At least one of the numbers $n$, $n+2$ and $n+4$ is not prime since it is divisible by 3.
+\end{enumerate}
+This contradicts our original assumption, so there is no $n>3$ for which $n$, $n+2$ and $n+4$ are all prime.$\square$
+
+\chapter{Problem 7}
+\section*{Statement}
+Prove that for any natural number $n$,
+\begin{equation}
+2 + 2^2 + 2^3 + \cdots + 2^n = 2^{n+1}-2
+\end{equation}
+\section*{Solution}
+To prove this, we will use the method of mathematical induction.
+
+As a fist step, we will validate that the equation is valid for $n=1$: $2^1=2^{1+1}-2$ is a true statement since $2=4-2$.
+
+Applying the induction step, let's assume that the following equation is true for $n$:
+\begin{equation}
+2 + 2^2 + 2^3 + \cdots + 2^n = 2^{n+1}-2
+\end{equation}
+... and let's prove that it holds true for $n+1$:
+\begin{equation}\label{inducepown}
+\begin{split}
+2 + 2^2 + 2^3 + \cdots + 2^n + 2^{n+1} & = \\
+(2 + 2^2 + 2^3 + \cdots + 2^n) + 2^{n+1} & = \\
+2^{n+1}-2+2^{n+1} & = \\
+2 \cdot 2^{n+1}-2 & = \\
+2^{n+1+1}-2 & = \\
+& = 2^{n+2}-2
+\end{split}
+\end{equation}
+
+Equation \ref{inducepown} proves that the induction step holds true for $n+1$, thus completing the proof.$\square$
+
+\chapter{Problem 8}
+\section*{Statement}
+Prove (from the definition of a limit of a sequence) that if the sequence $\{a_{n}\}_{n=1}^{\infty}$ tends to limit $L$ as $n\to\infty$, then for any fixed number $M>0$, the sequence $\{Ma_{n}\}_{n=1}^{\infty}$ tends to the limit $ML$.
+\section*{Solution}
+By the definition of a limit for sequence $\{a_n\}_{n=1}^{\infty}$, we have:
+\begin{equation}\label{limitofequation}
+(\forall \epsilon>0)(\exists N \in \mathbb{N})(\forall n \in \mathbb{N})(n \geq N \implies |a_n-L|<\epsilon)
+\end{equation}
+With the definition expressed in \ref{limitofequation}, given an $\epsilon$ value, we will pick an integer number $N$ (let's call it $N_M$) having a sufficiently high value to satisfy the following inequality:
+\begin{equation}\label{eplsioninequality}
+|a_n-L|<\frac{\epsilon}{M}
+\end{equation}
+If we multiply the inequality \ref{eplsioninequality} with $M$ (we can do this because $M$ is positive), then we can state that:
+\begin{equation}\label{Meplsioninequality}
+|Ma_n-ML|<\epsilon
+\end{equation}
+This way we can restate the definition of a limit for a sequence as this:
+\begin{equation}\label{limitofequation2}
+(\forall \epsilon>0)(\exists N_M \in \mathbb{N})(\forall n \in \mathbb{N})(n \geq N \implies |Ma_n-ML|<\epsilon)
+\end{equation}
+Applying the mentioned definition for the sequence $\{Ma_{n}\}_{n=1}^{\infty}$, we can conclude that its limit is $ML$.$\square$
+
+\chapter{Problem 9}
+\section*{Statement}
+Given an infinite collection $A_n$, $n=1,2,\dots$ of intervals of the real line, their \emph{intersection} is defined to be
+\begin{equation}\label{intersection}
+\bigcap\limits_{n=1}^{\infty}A_n=\{x \mid (\forall n)(x \in A_n)\}
+\end{equation}
+Give an example of a family of intervals $A_n$, $n=1,2,\dots,$ such that $A_{n+1} \subset A_n$ for all $n$ and $\bigcap\limits_{n=1}^{\infty}A_n=\emptyset$. Prove that your example has the stated property.
+\section*{Solution}
+Let us assume the following collection of intervals: $A_n=(0, \frac{1}{n})$. To exemplify, our intervals are:
+\begin{equation}\label{anseq}
+\begin{split}
+A_1 = (0, 1) \\
+A_2 = (0, \frac{1}{2}) \\
+A_3 = (0, \frac{1}{3})\\
+\cdots \\
+A_n = (0, \frac{1}{n})\\
+\end{split}
+\end{equation}
+First we will prove the inclusion and then we will show that there is no common element between all these intervals.
+\subsection*{Proof of Inclusion}
+For intervals $A_n$ and $A_{n+1}$, we can state that:\noprelistbreak
+\begin{enumerate}
+\item they have the same lower bound, $0$.
+\item because $\frac{1}{n+1}<\frac{1}{n}$, the upper bound of $A_{n+1}$ is lower that the upper bound of $A_n$.
+\end{enumerate}
+Given these two statements, it means that $A_{n+1} \subset A_n$.
+\subsection*{Proof of No Common Element}
+We will use proof by contradiction. Let's assume that there is at least one element, $\epsilon$ common for all the intervals.
+Given that the lower bound for all the intervals is $0$, we can state that $\epsilon > 0$. Having $\epsilon$ a positive number, let's pick a natural number $N$ such that $N>\frac{1}{\epsilon}$. This means that $\epsilon>\frac{1}{N}$ which means that $\epsilon$ is not part of $A_N$ (because $\frac{1}{N}$ is the upper bound of $A_N$).\
+
+The latest statement represents a contradiction because we assumed $\epsilon$ is common to all of the intervals and we found one ($A_N$) that $\epsilon$ doesn't belong to.
+
+Given the proofs of inclusion and of no element commonality, we can conclude that the collection $A_n=(0, \frac{1}{n}), n \in \mathbb{N}$ satisfies the following property: $(\forall n \in \mathbb{N})((A_{n+1} \subset A_n) \land (\bigcap\limits_{n=1}^{\infty}A_n=\emptyset))$.$\square$ 
+
+\chapter{Problem 10}
+\section*{Statement}
+Give an example of a family of intervals $A_n$, $n=1,2,\dots,$ such that $A_{n+1} \subset A_n$ for all $n$ and $\bigcap\limits_{n=1}^{\infty}A_n$ consists of a single real number. Prove that your example has the stated property.
+\section*{Solution}
+Just as a remark to start with, this problem is very similar to the problem 9. Let's consider a slight variation of the solution proposed in problem 9: we will have the collection of intervals like this: $A_n=[0, \frac{1}{n})$ where $n \in \mathbb{N}$. The proof we will follow almost the same steps as for problem 9:
+\subsection*{Proof of Inclusion}
+For intervals $A_n$ and $A_{n+1}$, we can state that:\noprelistbreak
+\begin{enumerate}
+\item they have the same lower bound, $0$.
+\item because $\frac{1}{n+1}<\frac{1}{n}$, the upper bound of $A_{n+1}$ is lower that the upper bound of $A_n$.
+\end{enumerate}
+Given these two statements, it means that $A_{n+1} \subset A_n$.
+\subsection*{Proof of Single Common Element (0)}
+We will use proof by contradiction. We can state that $0$ is included in all the intervals. Let's assume that there is another element, $\epsilon \neq 0 $ common for all the intervals.
+Given that the lower bound for all the intervals is $0$, we can state that $\epsilon > 0$. Having $\epsilon$ a positive number, let's pick a natural number $N$ such that $N>\frac{1}{\epsilon}$. This means that $\epsilon>\frac{1}{N}$ which means that $\epsilon$ is not part of $A_N$ (because $\frac{1}{N}$ is the upper bound of $A_N$).\
+
+The latest statement represents a contradiction because we assumed $\epsilon$ is common to all of the intervals and we found one ($A_N$) that $\epsilon$ doesn't belong to.
+
+Given the proofs of inclusion and of single common element, we can conclude that the collection $A_n=[0, \frac{1}{n}), n \in \mathbb{N}$ satisfies the following property: $(\forall n \in \mathbb{N})((A_{n+1} \subset A_n) \land (\bigcap\limits_{n=1}^{\infty}A_n=\{0\}))$.
+
+As a bonus example, $A_n=(-\frac{1}{n}, \frac{1}{n})$ where $n \in \mathbb{N}$ can be a solution to this problem as well (0 being the only common element).$\square$ 
+
+\appendix
+\backmatter
+%\printbibliography
+%\renewcommand{\indexname}{Index}
+%\printindex[document]\
+\glsaddall
+%\printacronyms
+%\printglossary
+\end{document}
