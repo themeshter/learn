@@ -1,5 +1,6 @@
+
 # In a nutshell...
-This is a repository with small items I gathered while learning (primarily MOOCs but other goodies can be found here).  
+This is a repository with small items I have gathered while learning (primarily MOOCs but other goodies can be found here as well).  
 # MOOCs
 Here is a list of massive open online courses I took over time and some useful material about them:
 ## Introduction to Mathematical Thinking

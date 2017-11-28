@@ -20,7 +20,7 @@ There are no links provided to Texmaker or Texlive because you can install those
 
 In order to start your work, follow these steps:
 1.  Clone this repository.
-2.  Open the `main.tex` file with Texmaker.
+2.  Open the `final-exam\main.tex` file with Texmaker.
 3.	Start editing it and change it to whatever you want. The `F1` key will "build" your PDF.
 
 ## Support
